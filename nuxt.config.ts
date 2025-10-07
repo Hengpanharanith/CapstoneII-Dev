@@ -1,20 +1,32 @@
 import vuetify from 'vite-plugin-vuetify'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineNuxtConfig({
   ssr: true,
+  compatibilityDate: '2025-10-07',
 
   app: {
     head: {
       title: 'CapstoneII',
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Nuxt 4 + Vuetify + Axios' },
+        { name: 'description', content: 'Nuxt 3 + Vuetify + Axios + TailwindCSS' },
       ],
       link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     },
   },
 
-  css: ['vuetify/lib/styles/main.sass'],
+  css: [
+    'vuetify/lib/styles/main.sass',
+    '@/assets/css/main.css', 
+  ],
+
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  },
 
   build: {
     transpile: ['vuetify'],
@@ -29,7 +41,10 @@ export default defineNuxtConfig({
     define: {
       'process.env.DEBUG': false,
     },
-    plugins: [vuetify({ autoImport: true })],
+    plugins: [
+      vuetify({ autoImport: true }),
+      tsconfigPaths(), // ✅ added for correct alias resolution
+    ],
     server: {
       proxy: {
         '/api': {
